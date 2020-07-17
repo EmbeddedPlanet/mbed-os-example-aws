@@ -3,6 +3,9 @@
 #include "mbedtls/debug.h"
 #include "aws_credentials.h"
 
+#include "rtos/ThisThread.h"
+#include <chrono>
+
 extern "C" {
 // sdk initialization
 #include "iot_init.h"
@@ -10,8 +13,13 @@ extern "C" {
 #include "iot_mqtt.h"
 }
 
+#include "aws_iot_ota_agent.h"
+
 // debugging facilities
 #define TRACE_GROUP "Main"
+
+using namespace std::chrono;
+
 static Mutex trace_mutex;
 static void trace_mutex_lock()
 {
@@ -46,6 +54,8 @@ int main()
     mbed_trace_mutex_wait_function_set( trace_mutex_lock ); // only if thread safety is needed
     mbed_trace_mutex_release_function_set( trace_mutex_unlock ); // only if thread safety is needed
     mbed_trace_init();
+
+    mbedtls_debug_set_threshold(4);
 
     tr_info("Connecting to the network...");
     auto eth = NetworkInterface::get_default_instance();
@@ -112,6 +122,8 @@ int main()
     subscription.callback.function = on_message_received;
     subscription.callback.pCallbackContext = &wait_sem;
 
+    rtos::ThisThread::sleep_for(100ms);
+
     /* Subscribe to the topic using the blocking SUBSCRIBE
      * function. */
     auto sub_status = IotMqtt_SubscribeSync(connection, &subscription,
@@ -119,6 +131,7 @@ int main()
                                             /* timeout ms */ MQTT_TIMEOUT_MS );
     if (sub_status != IOT_MQTT_SUCCESS) {
         tr_error("AWS Sdk: Subscribe failed with : %u", sub_status);
+        return -1;
     }
 
     /* Set the members of the publish info. */
