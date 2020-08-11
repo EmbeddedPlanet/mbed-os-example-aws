@@ -47,7 +47,9 @@
             "nsapi.dns-response-wait-time"              : 30000,
             "nsapi.default-cellular-apn"                : "\"phone\"",
             "lwip.use-mbed-trace"                       : true,
-            "lwip.debug-enabled"                        : false
+            "lwip.debug-enabled"                        : false,
+            "target.components_remove"                  : ["QSPIF"],
+            "target.components_add"                     : ["SPIF"]
         }
     }
 }
