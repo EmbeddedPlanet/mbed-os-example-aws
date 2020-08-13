@@ -18,12 +18,13 @@ extern "C" {
 #include "LittleFileSystem.h"
 
 #include "drivers/DigitalOut.h"
+#include "bootutil.h"
 
 mbed::DigitalOut led(LED1, 1);
 
 // This will take the system's default block device
-BlockDevice *bd = BlockDevice::get_default_instance();
-LittleFileSystem fs("fs");
+//BlockDevice *bd = BlockDevice::get_default_instance();
+//LittleFileSystem fs("fs");
 
 // debugging facilities
 #define TRACE_GROUP "Main"
@@ -261,23 +262,23 @@ void run_ota_update_demo(void * pNetworkServerInfo,
     }
 }
 
-void fs_init(void) {
-    // Try to mount the filesystem
-    tr_info("mounting the filesystem... ");
-    fflush(stdout);
-    int err = fs.mount(bd);
-    tr_info("%s\n", (err ? "Fail :(" : "OK"));
-    if (err) {
-        // Reformat if we can't mount the filesystem
-        tr_info("formatting... ");
-        fflush(stdout);
-        err = fs.reformat(bd);
-        tr_info("%s\n", (err ? "Fail :(" : "OK"));
-        if (err) {
-            tr_error("error: %s (%d)\n", strerror(-err), err);
-        }
-    }
-}
+//void fs_init(void) {
+//    // Try to mount the filesystem
+//    tr_info("mounting the filesystem... ");
+//    fflush(stdout);
+//    int err = fs.mount(bd);
+//    tr_info("%s\n", (err ? "Fail :(" : "OK"));
+//    if (err) {
+//        // Reformat if we can't mount the filesystem
+//        tr_info("formatting... ");
+//        fflush(stdout);
+//        err = fs.reformat(bd);
+//        tr_info("%s\n", (err ? "Fail :(" : "OK"));
+//        if (err) {
+//            tr_error("error: %s (%d)\n", strerror(-err), err);
+//        }
+//    }
+//}
 
 int main()
 {
@@ -285,8 +286,13 @@ int main()
     mbed_trace_mutex_release_function_set( trace_mutex_unlock ); // only if thread safety is needed
     mbed_trace_init();
 
-    tr_info("initialize filesystem...");
-    fs_init();
+    tr_info("Updated woohoo!");
+
+    // Confirm this update
+    boot_set_confirmed();
+
+//    tr_info("initialize filesystem...");
+//    fs_init();
 
     mbedtls_debug_set_threshold(4);
 

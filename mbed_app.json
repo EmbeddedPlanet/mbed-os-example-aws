@@ -20,11 +20,14 @@
             "aws-client.log-puts": "aws_iot_puts",
             "aws-client.log-level-global": "IOT_LOG_INFO",
             "rtos.main-thread-stack-size": 8192,
-            "rtos.thread-stack-size": 2048,
+            "rtos.thread-stack-size": 4096,
             "rtos.idle-thread-stack-size": 2048,
             "platform.error-filename-capture-enabled": true,
             "platform.stdio-convert-newlines": true,
-            "platform.stdio-baud-rate": 115200
+            "platform.stdio-baud-rate": 115200,
+            "mcuboot.bootloader-build": 0,
+            "target.mbed_app_start": "0x20000",
+            "target.mbed_app_size": "0xDC000"
         },
         "DISCO_L475VG_IOT01A": {
             "target.network-default-interface-type": "WIFI",
@@ -42,8 +45,8 @@
             "lwip.ppp-enabled"                          : true,
             "lwip.tcp-enabled"                          : true,
             "lwip.ethernet-enabled"                     : false,
-            "lwip.mem-size"                             : 22000,
-            "lwip.tcpip-thread-stacksize"               : 2000,
+            "lwip.mem-size"                             : 30000,
+            "lwip.tcpip-thread-stacksize"               : 4096,
             "nsapi.dns-response-wait-time"              : 30000,
             "nsapi.default-cellular-apn"                : "\"phone\"",
             "lwip.use-mbed-trace"                       : true,
