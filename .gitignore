@@ -5,6 +5,7 @@
 *.pem
 *.key
 *.crt
+*.lib
 BUILD/
 GettingStarted.html
 mbed-aws-client/*
