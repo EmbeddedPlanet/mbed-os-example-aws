@@ -1,0 +1,14 @@
+*~
+*#*
+*.bin
+*.hex
+*.pem
+*.key
+*.crt
+BUILD/
+GettingStarted.html
+mbed-aws-client/*
+mbed-os/*
+wifi-ism43362/*
+mbed_config.h
+makefile.targets
